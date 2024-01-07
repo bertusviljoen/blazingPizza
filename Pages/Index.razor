@@ -1,5 +1,4 @@
 @page "/"
-@using BlazingPizza.Services
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject OrderState OrderState
@@ -11,11 +10,11 @@
     {
       @foreach (var special in specials)
       {
-        <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
+          <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
           <div class="pizza-info">
-              <span class="title">@special.Name</span>
-                  @special.Description
-                <span class="price">@special.GetFormattedBasePrice()</span>
+          <span class="title">@special.Name</span>
+          @special.Description
+          <span class="price">@special.GetFormattedBasePrice()</span>
           </div>
         </li>
       }
@@ -40,11 +39,11 @@
             @foreach (var configuredPizza in order.Pizzas)
             {
               <div class="cart-item">
+                  <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
                   <div class="title">@(configuredPizza.Size)" @configuredPizza.Special.Name</div>
                   <div class="item-price">
                       @configuredPizza.GetFormattedTotalPrice()
                   </div>
-                  <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
               </div>
             }
         </div>
@@ -62,13 +61,14 @@
         </a>
     </div>
 </div>
-		
 
 @code {
-    List<PizzaSpecial> specials = new List<PizzaSpecial>();
-    Order order => OrderState.Order;
-    protected override async Task OnInitializedAsync()
-    {
-        specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
-    }
+  List<PizzaSpecial> specials = new List<PizzaSpecial>();
+  Order order => OrderState.Order;
+
+  protected override async Task OnInitializedAsync()
+  {
+      specials = await HttpClient.GetFromJsonAsync<List<PizzaSpecial>>(NavigationManager.BaseUri + "specials");
+  }
 }
+		
