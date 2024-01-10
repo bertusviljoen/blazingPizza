@@ -58,17 +58,28 @@
     OrderWithStatus orderWithStatus;
     bool invalidOrder = false;
 
-    protected override async Task OnParametersSetAsync()
-    {
-      try
-      {
-          orderWithStatus = await HttpClient.GetFromJsonAsync<OrderWithStatus>(
-              $"{NavigationManager.BaseUri}orders/{OrderId}");
-      }
-      catch (Exception ex)
-      {
-          invalidOrder = true;
-          Console.Error.WriteLine(ex);
-      }
-    }
+    /// <summary>
+     /// This method is called whenever parameters are set in the component. 
+     /// It's a lifecycle method that is part of the Blazor component model.
+     /// </summary>
+     /// <remarks>
+     /// The method tries to call a GET request to an API and parse the JSON response to an object of type OrderWithStatus.
+     /// The API endpoint is constructed by combining the base uri, 'orders', and the OrderId.
+     /// If the API call failed for any reason (network issues, server-side problems, parsing errors, etc.), 
+     /// it catches the exception and sets `invalidOrder` to `true`, then logs the exception to the console error 
+     /// </remarks>
+     /// <returns>A Task that represents the asynchronous operation.</returns>
+     protected override async Task OnParametersSetAsync()
+     {
+       try
+       {
+           orderWithStatus = await HttpClient.GetFromJsonAsync<OrderWithStatus>(
+               $"{NavigationManager.BaseUri}orders/{OrderId}");
+       }
+       catch (Exception ex)
+       {
+           invalidOrder = true;
+           Console.Error.WriteLine(ex);
+       }
+     }
 }
