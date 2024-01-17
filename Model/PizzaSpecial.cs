@@ -16,4 +16,6 @@ public class PizzaSpecial
     public string ImageUrl { get; set; }
 
     public string GetFormattedBasePrice() => BasePrice.ToString("0.00");
+
+    public int? FixedSize { get; set; }
 }
