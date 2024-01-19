@@ -20,30 +20,35 @@ public class Pizza
     public int Size { get; set; }
     public List<PizzaTopping> Toppings { get; set; }
 
-    //This C# code snippet defines a method called `GetBasePrice` that returns a decimal 
-    //value. The method uses a conditional expression to calculate the base price based 
-    //on the presence of a `Special` object and its properties.
-    //Here's a breakdown of the code:
-    //- The method uses the conditional operator (`? :`) to check if the `Special` object 
-    //has a non-null `FixedSize` property.
-    //- If the `FixedSize` property is not null, the method returns the `BasePrice` 
-    //property of the `Special` object.
-    //- If the `FixedSize` property is null, the method calculates the base price using the following formula:
-    // - `(decimal)Size / DefaultSize * Special?.BasePrice ??1`
-    // - If `Special` is not null, it multiplies the size by the ratio of `Size` to `DefaultSize` and then multiplies it by the `BasePrice` of the `Special` object. If `Special` is null, it defaults to1.
-    //In summary, the `GetBasePrice` method calculates the base price based on the presence of a `Special` object and its properties, using a conditional expression to handle different scenarios.
+    /// <summary>
+    /// Calculates the base price of the pizza.
+    /// </summary>
+    /// <returns>The base price of the pizza as a decimal value.</returns>
+    /// <remarks>
+    /// This method uses a conditional expression to calculate the base price based on the presence of a <see cref="Special"/> object and its properties.
+    /// If the <see cref="Special"/> object has a non-null <see cref="PizzaSpecial.FixedSize"/> property, the method returns the <see cref="PizzaSpecial.BasePrice"/> property of the <see cref="Special"/> object.
+    /// If the <see cref="Special"/> object is null or the <see cref="PizzaSpecial.FixedSize"/> property is null, the method calculates the base price using the formula: <c>(decimal)Size / DefaultSize * Special?.BasePrice ?? 1</c>.
+    /// </remarks>
     public decimal GetBasePrice() =>
         Special is { FixedSize: not null }
             ? Special.BasePrice
             : (decimal)Size / DefaultSize * Special?.BasePrice ?? 1;
-
+    /// <summary>
+    /// Calculates the total price of the pizza.
+    /// </summary>
+    /// <returns>The total price of the pizza as a decimal value.</returns>
     public decimal GetTotalPrice()
     {
         return GetBasePrice();
     }
 
+    /// <summary>
+    /// Gets the formatted total price of the pizza.
+    /// </summary>
+    /// <returns>The formatted total price of the pizza as a string.</returns>
     public string GetFormattedTotalPrice()
     {
         return GetTotalPrice().ToString("0.00");
     }
 }
+
